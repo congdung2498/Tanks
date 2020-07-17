@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;
     public GameObject m_TankPrefab;
     public GameObject m_ItemHeartPrefab;
-    public GameObject m_ItemDiamonPrefab;
+    public GameObject m_ItemDiamondPrefab;
     public TankManager[] m_Tanks;
 
     public Transform[] m_SpawnPointItem;
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             itemSpawn[randomIndex] = 1;
             if(randomIndex %2 == 0 )
                 Instantiate(m_ItemHeartPrefab, m_SpawnPointItem[randomIndex].position, m_SpawnPointItem[randomIndex].rotation);
-            else Instantiate(m_ItemDiamonPrefab, m_SpawnPointItem[randomIndex].position, m_SpawnPointItem[randomIndex].rotation);
+            else Instantiate(m_ItemDiamondPrefab, m_SpawnPointItem[randomIndex].position, m_SpawnPointItem[randomIndex].rotation);
         }
         
        
@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
     {
         ResetAllTanks();
         DisableTankControl();
+        ResetItems();
         m_CameraControl.SetStartPositionAndSize();
         m_RoundNumber++;
         m_MessageText.text = "ROUND " + m_RoundNumber;
@@ -203,7 +204,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ResetItems()
+    {
+        GameObject[] diamondItem = GameObject.FindGameObjectsWithTag("Diamond");
+        GameObject[] heartItem = GameObject.FindGameObjectsWithTag("Heart");
+        for (int i = 0; i < diamondItem.Length; i++) {
+            Destroy(diamondItem[i]);
+        }
+        for (int i = 0; i < heartItem.Length; i++)
+        {
+            Destroy(heartItem[i]);
+        }
+        itemSpawn = new int[6];
 
+    }
     private void EnableTankControl()
     {
         for (int i = 0; i < m_Tanks.Length; i++)

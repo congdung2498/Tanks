@@ -42,6 +42,8 @@ namespace Assets.Scripts.Item
                 if (gameObject.tag == "Heart")
                 {
                     other.gameObject.GetComponent<TankHealth>().AddHealth(m_AddingHealth);
+                    Vector3 moveOut = new Vector3(transform.position.x, transform.position.y - 100f, transform.position.z);
+                    transform.position = moveOut;
                 }
                 else {
                     other.gameObject.GetComponent<TankMovement>().m_Speed = m_NewSpeed;
@@ -49,18 +51,22 @@ namespace Assets.Scripts.Item
                     transform.position = moveOut;
                     yield return other.gameObject.GetComponent<TankMovement>().resetSpeed(m_OldSpeed);
                 }
-                
 
+                
                 //dat lai vi tri spawnItem = 0 de tiep tuc spawn
                 GameObject[] gameobjs = GameObject.FindGameObjectsWithTag("GameManager");
                 Transform[] m_SpawnPointItem = gameobjs[0].GetComponent<GameManager>().m_SpawnPointItem;
+                Vector3 oldPosition = new Vector3(transform.position.x, transform.position.y + 100, transform.position.z);
 
                 for (int i = 0; i < m_SpawnPointItem.Length; i++) {
-                    Vector3 toTarget = m_SpawnPointItem[i].position - transform.position;
-                    float distance = toTarget.magnitude;
-                    if (distance<101) {
+                    if (oldPosition == m_SpawnPointItem[i].position){
                         GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>().itemSpawn[i] = 0;
                     }
+                    //Vector3 toTarget = m_SpawnPointItem[i].position - transform.position;
+                    //float distance = toTarget.magnitude;
+                    //if (distance<101) {
+                    //    GameObject.FindGameObjectsWithTag("GameManager")[0].GetComponent<GameManager>().itemSpawn[i] = 0;
+                    //}
                 }
                 Destroy(gameObject);
                 
